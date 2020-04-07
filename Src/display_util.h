@@ -20,7 +20,7 @@ struct pixel {
 };
 
 /* Vertical scroll effect */
-struct scroll_state {
+struct odometer_state {
     char old;
     char new;
     int pos;

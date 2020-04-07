@@ -51,7 +51,7 @@ void draw_char(char c, int x, int y, int start_line, int num_lines, const struct
     draw_var_char(c, x, y, start_line, num_lines, 0, f, color, fb);
 }
 
-int draw_scroll_effect(int x, int y, struct scroll_state *state, const struct font* f, int color, struct pixel *fb)
+int draw_odometer_effect(int x, int y, struct odometer_state *state, const struct font* f, int color, struct pixel *fb)
 {
     int height = f->h;
     int pos = state->pos;
@@ -79,7 +79,7 @@ int draw_scroll_effect(int x, int y, struct scroll_state *state, const struct fo
     return 0;
 }
 
-void scroll_on(char new, struct scroll_state *state) {
+void odometer_scroll_on(char new, struct odometer_state *state) {
     if (state->old == new || state->pos != -1)
         return;
 
@@ -88,7 +88,7 @@ void scroll_on(char new, struct scroll_state *state) {
     state->pos = 0;
 }
 
-void scroll_init(struct scroll_state *state) {
+void odometer_init(struct odometer_state *state) {
     state->old = ' ';
     state->new = ' ';
     state->pos = -1;

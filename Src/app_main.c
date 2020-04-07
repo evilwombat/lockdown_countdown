@@ -52,7 +52,7 @@ const int rainbow_colors[] = {
 };
 
 #define NUM_SCROLL_DIGITS   7
-struct scroll_state digits[NUM_SCROLL_DIGITS];
+struct odometer_state digits[NUM_SCROLL_DIGITS];
 
 int get_seconds_remaining(int32_t time_now)
 {
@@ -207,7 +207,7 @@ int app_main(void)
 
     /* Set up state machine for odometer animation */
     for (i = 0; i < NUM_SCROLL_DIGITS; i++)
-        scroll_init(digits + i);
+        odometer_init(digits + i);
 
     while(1) {
         memset(framebuffer_top, 0, sizeof(framebuffer_top));
@@ -232,7 +232,7 @@ int app_main(void)
             snprintf(countdown_text, sizeof(countdown_text), "%7d", time_left);
 
             for (i = 0; i < NUM_SCROLL_DIGITS; i++)
-                scroll_on(countdown_text[i], digits + i);
+                odometer_scroll_on(countdown_text[i], digits + i);
 
             /* If the time changes, reset the odometer cooldown immediately. This prevents stutter */
             scroll_cooldown = 0;
@@ -246,7 +246,7 @@ int app_main(void)
 
             /* This also advances the odometer animation by one step */
             for (i = 0; i < NUM_SCROLL_DIGITS; i++)
-                draw_scroll_effect(i * 9, 0, digits + i, &font_9_14, rainbow_colors[i], framebuffer_bottom);
+                draw_odometer_effect(i * 9, 0, digits + i, &font_9_14, rainbow_colors[i], framebuffer_bottom);
 
             /* Adjust the brightness on the odometer based on current scale */
             scale_framebuffer(framebuffer_bottom, FRAMEBUFFER_SIZE, scale);
