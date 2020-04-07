@@ -177,30 +177,30 @@ int app_main(void)
      * */
 
     /* Top display - this shows scrolling text messages */
-    led_channels[0].framebuffer = framebuffer_top + 0;
+    led_channels[0].framebuffer = (uint8_t*) (framebuffer_top + 0);
     led_channels[0].length = sizeof(struct pixel) * 256;
 
-    led_channels[1].framebuffer = framebuffer_top + 256;
+    led_channels[1].framebuffer = (uint8_t*) (framebuffer_top + 256);
     led_channels[1].length = sizeof(struct pixel) * 256;
 
-    led_channels[2].framebuffer = framebuffer_top + 512;
+    led_channels[2].framebuffer = (uint8_t*) (framebuffer_top + 512);
     led_channels[2].length = sizeof(struct pixel) * 256;
 
-    led_channels[3].framebuffer = framebuffer_top + 768;
+    led_channels[3].framebuffer = (uint8_t*) (framebuffer_top + 768);
     led_channels[3].length = sizeof(struct pixel) * 256;
 
 
     /* Bottom display - this shows odometer digits */
-    led_channels[4].framebuffer = framebuffer_bottom + 0;
+    led_channels[4].framebuffer = (uint8_t*) (framebuffer_bottom + 0);
     led_channels[4].length = sizeof(struct pixel) * 256;
 
-    led_channels[5].framebuffer = framebuffer_bottom + 256;
+    led_channels[5].framebuffer = (uint8_t*) (framebuffer_bottom + 256);
     led_channels[5].length = sizeof(struct pixel) * 256;
 
-    led_channels[6].framebuffer = framebuffer_bottom + 512;
+    led_channels[6].framebuffer = (uint8_t*) (framebuffer_bottom + 512);
     led_channels[6].length = sizeof(struct pixel) * 256;
 
-    led_channels[7].framebuffer = framebuffer_bottom + 768;
+    led_channels[7].framebuffer = (uint8_t*) (framebuffer_bottom + 768);
     led_channels[7].length = sizeof(struct pixel) * 256;
 
     ws2812_init();
