@@ -39,13 +39,27 @@ struct pixel framebuffer_bottom[FRAMEBUFFER_SIZE];
 
 const int rainbow_colors[] = {
     0xFF0000,
-    0xFF4000,
-    0x8F8F00,
-    0x00DF00,
-    0x008F8F,
+    0xFF3000,
+    0xAF6F00,
+    0x00D700,
+    0x008383,
 //    0x1010FF, /* Blue is hard to see from afar */
-    0x6F006F,
-    0x404040,
+    0x7f007f,
+    0x4f4f4f,
+    0x00FF40,
+    0x60FF1F,
+    0xFFFFFF,
+};
+
+const int night_colors[] = {
+    0xFF0000,
+    0xFF4000,
+    0x9F8F00,
+    0x00DF00,
+    0x009090,
+//    0x1010FF, /* Blue is hard to see from afar */
+    0x800080,
+    0x4f4f4f,
     0x00FF40,
     0x60FF1F,
     0xFFFFFF,
@@ -103,17 +117,19 @@ void generate_time_left_msg(char *msg, int max_len, int time_left)
 }
 
 const char *static_messages[] = {
+    TXT_BLUE    "Wombats are marsupials native to Australia.",
     TXT_GREEN   "Hello world",
     TXT_YELLOW  "Sanitizer?  I barely even know her!",
     TXT_BLUE    "Wash your hands, guys",
     TXT_WHITE   "Did you call your family today?",
     TXT_YELLOW  "Social distancing saves lives",
-    TXT_WHITE   "No, the airlines do " TXT_RED "NOT" TXT_WHITE " need a bailout.",
+    TXT_WHITE   "No, the airlines do " TXT_RED "not" TXT_WHITE " need a bailout.",
     TXT_GREEN   "github.com/" TXT_YELLOW "evilwombat",
     TXT_YELLOW  "Video-call your friends on the other coast!",
     TXT_BLUE    "Now's a good time to catch up on video games!",
     TXT_GREEN   "Coming soon: " TXT_YELLOW "50 Recipes for Cooking Toilet Paper",
     TXT_BLUE    "Most Australians have never seen a wild wombat.",
+    TXT_GREEN   "No, Wall Street does " TXT_RED "not" TXT_GREEN " need a bailout, either.",
     TXT_WHITE   "What's the first thing you're gonna do when this is over?",
     TXT_RED     "At least air pollution is way down.",
     NULL
@@ -124,6 +140,7 @@ int app_main(void)
     int32_t time_now;
     int time_left;
     int last_time_left = -1;
+    int night_mode = 0;
     int scale = 64;
     int scroll_cooldown = 0;
     struct tm *tm_now;
@@ -220,9 +237,9 @@ int app_main(void)
         /* Set the LED brightness based on time of day. */
         if (tm_now) {
             if (tm_now->tm_hour > 19 || tm_now->tm_hour < 8)
-                scale = 64;             /* Night mode */
+                night_mode = 1;
             else
-                scale = 8;              /* Day mode */
+                night_mode = 0;
         }
 
         if (time_left < 0)
@@ -238,6 +255,11 @@ int app_main(void)
             scroll_cooldown = 0;
         }
 
+        if (night_mode)
+            scale = 64;             /* Night mode */
+        else
+            scale = 8;              /* Day mode */
+
         last_time_left = time_left;
 
         /* We don't want the odometer to animate on every frame; it's too fast. So, implement a cooldown */
@@ -246,7 +268,8 @@ int app_main(void)
 
             /* This also advances the odometer animation by one step */
             for (i = 0; i < NUM_SCROLL_DIGITS; i++)
-                draw_odometer_effect(i * 9, 0, digits + i, &font_9_14, rainbow_colors[i], framebuffer_bottom);
+                draw_odometer_effect(i * 9, 0, digits + i, &font_9_14,
+                                     night_mode ? night_colors[i] : rainbow_colors[i], framebuffer_bottom);
 
             /* Adjust the brightness on the odometer based on current scale */
             scale_framebuffer(framebuffer_bottom, FRAMEBUFFER_SIZE, scale);
